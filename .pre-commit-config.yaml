@@ -1,0 +1,58 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-toml
+      - id: debug-statements
+      - id: check-merge-conflict
+
+  - repo: https://github.com/psf/black
+    rev: 24.2.0
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.2.2
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+  - repo: local
+    hooks:
+      - id: mypy-local
+        name: mypy
+        language: python
+        entry: python -m mypy_runner
+        types: [python]
+        exclude: ^tests/
+        args: [
+          --namespace-packages,
+          --explicit-package-bases,
+          --python-version=3.10,
+          --ignore-missing-imports,
+          --no-strict-optional,
+          --no-warn-return-any,
+          --implicit-optional,
+          --allow-untyped-defs,
+          --allow-incomplete-defs,
+          --allow-untyped-decorators,
+          --follow-imports=skip
+        ]
+        additional_dependencies: [
+          mypy==1.7.1,
+          types-requests,
+          types-PyYAML,
+          types-psutil,
+          types-tqdm,
+          types-setuptools
+        ]
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.13.0
+    hooks:
+      - id: commitizen

@@ -1,0 +1,87 @@
+[project]
+name = "synapstor"
+dynamic = ["version"]
+description = "An unofficial evolution of mcp-server-qdrant - Client and server for semantic storage and search"
+readme = "README.pypi.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Malindentado", email = "contato@casheiro.com.br" }]
+dependencies = [
+    "mcp[cli]>=1.3.0",
+    "dotenv",
+    "qdrant-client>=1.3.1",
+    "fastembed>=0.6.1",
+    "sentence-transformers>=2.2.2",
+    "Unidecode>=1.3.0",
+    "docopt>=0.6.0",
+    "fastapi>=0.85.1",
+    "uvicorn>=0.19.0",
+    "langchain>=0.0.200",
+    "pydantic-settings>=2.0.0",
+    "psutil>=6.0.0",
+    "pytest>=7.4.3",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/casheiro/synapstor"
+"Bug Tracker" = "https://github.com/casheiro/synapstor/issues"
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+synapstor-indexer = "synapstor.tools.indexer:command_line_runner"
+synapstor-server = "cli.server:main"
+synapstor-reindex = "cli.reindex:main"
+synapstor-setup = "cli.setup:main"
+synapstor-config = "cli.config:main"
+synapstor-ctl = "cli.ctl:main"
+
+[tool.setuptools]
+packages = ["synapstor", "cli"]
+package-dir = { "synapstor" = "src/synapstor" }
+
+[project.optional-dependencies]
+fastembed = ["fastembed>=0.6.1"]
+dev = [
+    "pre-commit",
+    "black",
+    "isort",
+    "flake8",
+    "mypy",
+    "commitizen"
+]
+test = [
+    "pytest>=7.4.3",
+    "pytest-cov>=2.12.1",
+    "pytest-asyncio>=0.21.0"
+]
+all = [
+    "fastembed>=0.6.1",
+    "pre-commit",
+    "black",
+    "isort",
+    "flake8",
+    "mypy",
+    "pytest>=7.4.3",
+    "pytest-cov>=2.12.1",
+    "pytest-asyncio>=0.21.0",
+    "commitizen"
+]
+
+[tool.commitizen]
+repo_url = "https://github.com/casheiro/synapstor"
+name = "cz_conventional_commits"
+version = "1.0.0"
+tag_format = "v$version"
+version_files = [
+  "src/synapstor/__init__.py:__version__"
+]
+changelog_file = "CHANGELOG.md"
+changelog_incremental = true
+update_changelog_on_bump = true
+
+[tool.setuptools.dynamic]
+version = {attr = "synapstor.__version__"}
