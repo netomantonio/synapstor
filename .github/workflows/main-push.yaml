@@ -14,10 +14,14 @@ jobs:
   # Etapa 2: Publicar no PyPI
   publish-prod:
     needs: [release]
-    if: always()
+    if: ${{ needs.release.outputs.changed == 'true' && success() }}
     uses: ./.github/workflows/pypi-publish.yaml
     with:
-      environment: 'pypi'
+      repository: ${{ github.repository }}
+      test_publish: false
+    permissions:
+      id-token: write
+      contents: read
     secrets:
-      TEST_PYPI_API_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
-      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+      TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
